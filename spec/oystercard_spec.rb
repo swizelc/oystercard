@@ -27,16 +27,21 @@ describe Oystercard do
   describe "#deduct()" do
     it "deduce amount from balance for a trip" do
       subject.top_up(15)
-      expect(subject.deduct(20)).to eq (-5)
+      expect{subject.deduct(20)}.to change{subject.balance}.by (-20)
     end
   end
   describe '.touch_in' do
     it 'changes in_journey to be true' do
+      subject.top_up(5)
       expect(subject.touch_in).to eq true
+    end
+    it "throws an error if balance has insufficent funds" do
+      expect { subject.touch_in}.to raise_error "Not enough credit, TOP UP!"
     end
   end
   describe '.touch_out' do
     it 'changes in_journey to be false' do
+      subject.top_up(5)
       subject.touch_in
       expect(subject.touch_out).to eq false
     end
