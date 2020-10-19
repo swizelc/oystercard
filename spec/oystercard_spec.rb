@@ -2,6 +2,7 @@ require 'oystercard'
 describe Oystercard do
   it { is_expected.to respond_to(:balance) }
   it { is_expected.to respond_to(:top_up) }
+  it { is_expected.to respond_to(:deduct) }
 
   describe '.balance' do
     it 'returns the balance of the card' do
@@ -19,6 +20,11 @@ describe Oystercard do
     it 'throws an error when trying to exceed £90' do
       expect { subject.top_up(91) }.to raise_error("Can't exceed limit of £90")
     end
-
   end
+  describe "#deduct()" do
+    it "deduce amount from balance for a trip" do
+      subject.top_up(15)
+      expect(subject.deduct(20)).to eq (-5)
+    end
+  end 
 end
