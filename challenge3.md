@@ -7,9 +7,8 @@ Type of error:
 
 File path of error:
 
-```./spec/oystercard_spec.rb:2:in `<top (required)>'
+```./spec/oystercard_spec.rb:2:in `<top (required)>
 ```
-
 Line number: 2
 
 
