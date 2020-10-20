@@ -4,10 +4,12 @@ class Oystercard
   def initialize(balance = 0)
     @balance = balance
     @in_journey = false
+    @default_min_cap = 1
+    @default_max_cap = 90
   end
 
   def top_up(amount)
-    fail "Can't exceed limit of £90" if (@balance + amount) > 90
+    fail "Can't exceed limit of £90" if (@balance + amount) > @default_max_cap
     @balance += amount
   end
 
@@ -16,6 +18,7 @@ class Oystercard
   end
 
   def touch_in
+    fail "Not enough credit, TOP UP!" if @balance < @default_min_cap
     @in_journey = true
   end
 
