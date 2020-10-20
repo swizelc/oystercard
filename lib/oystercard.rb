@@ -6,6 +6,7 @@ class Oystercard
     @in_journey = false
     @default_min_cap = 1
     @default_max_cap = 90
+    @min_fare = 1
   end
 
   def top_up(amount)
@@ -23,6 +24,7 @@ class Oystercard
   end
 
   def touch_out
+    @balance -= @min_fare
     @in_journey = false
   end
 
