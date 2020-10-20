@@ -1,5 +1,8 @@
 require 'oystercard'
 describe Oystercard do
+
+  let (:entry_station) {'Oxford Street'}
+
   it { is_expected.to respond_to(:balance) }
   it { is_expected.to respond_to(:top_up) }
   it { is_expected.to respond_to(:in_journey) }
@@ -27,23 +30,36 @@ describe Oystercard do
   describe '.touch_in' do
     it 'changes in_journey to be true' do
       subject.top_up(5)
-      expect(subject.touch_in).to eq true
+      subject.touch_in(:entry_station)
+      expect(subject.in_journey).to eq true
     end
     it "throws an error if balance has insufficent funds" do
-      expect { subject.touch_in}.to raise_error "Not enough credit, TOP UP!"
+      expect { subject.touch_in(:entry_station)}.to raise_error "Not enough credit, TOP UP!"
     end
+
+    it 'remembers the entry station' do
+      subject.top_up(5)
+      subject.touch_in(:entry_station)
+      expect(subject.entry_station).to eq :entry_station
+    end
+    
   end
   describe '.touch_out' do
     it 'changes in_journey to be false' do
       subject.top_up(5)
-      subject.touch_in
-      expect(subject.touch_out).to eq false
+      subject.touch_in(:entry_station)
+      subject.touch_out
+      expect(subject.in_journey).to eq false
     end
     it 'deducts min fare when you touch out' do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in(:entry_station)
       expect {subject.touch_out}.to change{subject.balance}.by(-1)
     end
   end
+
+
+
+
 
 end
