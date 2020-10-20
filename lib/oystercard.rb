@@ -24,8 +24,13 @@ class Oystercard
   end
 
   def touch_out
-    @balance -= @min_fare
+    deduct_min
     @in_journey = false
+  end
+
+  private
+  def deduct_min
+    @balance -= @min_fare
   end
 
 end
