@@ -14,23 +14,19 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     fail "Not enough credit, TOP UP!" if @balance < @default_min_cap
     @in_journey = true
   end
 
   def touch_out
-    deduct_min
+    deduct(@min_fare)
     @in_journey = false
   end
 
   private
-  def deduct_min
-    @balance -= @min_fare
+  def deduct(amount)
+    @balance -= amount
   end
 
 end
