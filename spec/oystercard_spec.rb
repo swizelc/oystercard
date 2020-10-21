@@ -1,5 +1,6 @@
 require 'oystercard'
 require 'station'
+require 'journey'
 
 describe Oystercard do
 
@@ -96,5 +97,8 @@ RSpec.describe Station do
       expect(station.zone).to eq 0
     end
   end
+end
+
+RSpec.describe Journey do
 
 end
