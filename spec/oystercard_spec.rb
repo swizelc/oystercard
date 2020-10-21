@@ -1,4 +1,6 @@
 require 'oystercard'
+require 'station'
+
 describe Oystercard do
 
   let (:entry_station) {double :entry_station}
@@ -71,10 +73,28 @@ describe Oystercard do
       expect((subject.journey_log).size).to eq 1
     end
   end
+end
 
+RSpec.describe Station do
+  let(:station) { Station.new("station001", 0) }
 
+  describe "#able to create a station" do
 
+    it " - responds to a request for a stations name" do
+      expect(station).to respond_to(:name)
+    end
 
+    it " - gives a name to the Station on initialisation" do
+      expect(station.name).to eq "station001"
+    end
 
+    it " - responds to a request for a stations zone" do
+      expect(station).to respond_to(:zone)
+    end
+
+    it " - gives a zone to the Station on initialisation" do
+      expect(station.zone).to eq 0
+    end
+  end
 
 end
