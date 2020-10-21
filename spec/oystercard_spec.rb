@@ -100,5 +100,42 @@ RSpec.describe Station do
 end
 
 RSpec.describe Journey do
+  let(:entry_station) { Station.new("station001", 1) }
+  let(:exit_station) { Station.new("station002", 4) }
+  describe 'create new journey' do
+    it 'enables a new journey to be created ' do
+      expect {Journey.new(entry_station, exit_station)}.to_not raise_error
+    end
+  end
+  let(:journey) { Journey.new(entry_station, exit_station) }
+  let(:subject) {journey}
+  describe '#check vaild journey' do
+    it { is_expected.to respond_to(:valid_journey?) }
+    it 'returns false when not touched in' do
+      journey1 = Journey.new(nil, exit_station)
+      expect(journey1.valid_journey?).to eq false
+    end
+    it 'returns false when not touched out' do
+      journey2 = Journey.new(entry_station, nil)
+      expect(journey2.valid_journey?).to eq false
+    end
+    it 'returns true for a journey that touches in and out' do
+      journey3 = Journey.new(entry_station, exit_station)
+      expect(journey3.valid_journey?).to eq true
+    end
+
+  end
+  describe '#fare' do
+    it { is_expected.to respond_to(:fare) }
+
+    it 'returns minimum fare for a valid journey' do
+      allow(subject).to receive(:valid_journey?).and_return true
+      expect(subject.fare).to eq Journey::MIN_FARE
+    end
+    it 'returns penalty fare for a invalid journey' do
+      allow(subject).to receive(:valid_journey?).and_return false
+      expect(subject.fare).to eq Journey::PENALTY_FARE
+    end
+  end
 
 end
