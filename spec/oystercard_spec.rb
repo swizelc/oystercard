@@ -142,19 +142,20 @@ end
 
 RSpec.describe JourneyLog do
   describe "setting up a new journey log object" do
-    let(:journey) { double :journey }
-    let(:station) { double :station }
-    let(:journey_class) {double :journey_class, new: journey}
-    subject {described_class.new(journey_class: journey_class)}
-
     it {is_expected.to respond_to(:start)}
-
+    let (:station) {double :station}
     describe "#start" do
       it 'starts a journey' do
-        expect(journey_class).to receive(:new).with(station)
         subject.start(station)
+        expect(subject.journeys.last.entry_station).to eq station
+      end
+
+      it 'records a journey' do
+        expect {subject.start(station)}.to change{subject.journeys.count}.by 1
       end
     end
+
+
   end
 
 end
