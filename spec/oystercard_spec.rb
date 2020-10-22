@@ -129,13 +129,15 @@ RSpec.describe Journey do
   describe '#fare' do
     it { is_expected.to respond_to(:fare) }
 
-    it 'returns minimum fare for a valid journey' do
-      allow(subject).to receive(:valid_journey?).and_return true
-      expect(subject.fare).to eq Journey::MIN_FARE
-    end
     it 'returns penalty fare for a invalid journey' do
       allow(subject).to receive(:valid_journey?).and_return false
       expect(subject.fare).to eq Journey::PENALTY_FARE
+    end
+    let(:entry_station) { Station.new("station001", 1) }
+    let(:exit_station) { Station.new("station002", 4) }
+    it 'returns the right fare depending on the zones travelled' do
+        allow(subject).to receive(:valid_journey?).and_return true
+        expect(subject.fare). to eq 4
     end
   end
 end
@@ -149,7 +151,6 @@ RSpec.describe JourneyLog do
         subject.start(station)
         expect(subject.journeys.last.entry_station).to eq station
       end
-
       it 'records a journey' do
         expect {subject.start(station)}.to change{subject.journeys.count}.by 1
       end

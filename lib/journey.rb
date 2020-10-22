@@ -1,7 +1,7 @@
 class Journey
   MIN_FARE = 1
   PENALTY_FARE = 6
-  attr_reader :entry_station
+  attr_reader :entry_station, :exit_station
   def initialize(entry=nil, exit=nil)
     @entry_station = entry
     @exit_station = exit
@@ -15,6 +15,7 @@ class Journey
 
   def fare
     return PENALTY_FARE unless valid_journey?
-    MIN_FARE
+    return MIN_FARE if @entry_station.zone == @exit_station.zone
+    return (@exit_station.zone - @entry_station.zone + 1)
   end
 end
